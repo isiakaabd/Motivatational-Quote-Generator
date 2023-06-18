@@ -3,7 +3,7 @@ import {
   BackgroundImage1,
   BackgroundImage2,
   Footer,
-  GradientBackground,
+  GradientBackgroundCon,
   FooterLink,
   QuoteGeneratorCon,
   QuoteGeneratorInnerCon,
@@ -16,27 +16,87 @@ import {
 } from "./components/QuotesGenerator";
 import storm from "./assets/storm.png";
 import cloud from "./assets/clouds.png";
-import { useState } from "react";
-import { Amplify } from "aws-amplify";
+import { useEffect, useState } from "react";
+import { Amplify, API } from "aws-amplify";
+import { GraphQLResult } from "@aws-amplify/api-graphql";
 import awsExports from "../src/aws-exports";
+import { quotesQueryName } from "@/src/graphql/queries";
+import QuoteGenerators from "./components/QuoteGenerators";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
+interface UpdateQuoteInfoData {
+  id: string;
+  queryName: string;
+  quotesGenerated: number;
+  createdAt: string;
+  updatedAt: string;
+}
 export default function Home() {
   const [quotes_number, setQuotes_number] = useState<Number | null>(0);
+  const [openGenerator, setOpenGenerator] = useState<boolean>(false);
+  const [quoteReceived, setQuoteReceived] = useState("");
+  const [processingQuote, setProcessingQuote] = useState<boolean>(false);
+  const updataQuoteInfo = async () => {
+    try {
+      const data = await API.graphql<UpdateQuoteInfoData>({
+        query: quotesQueryName,
+        authMode: "AWS_IAM",
+        variables: {
+          queryName: "LIVE",
+        },
+      });
+      if (!isGraphQLResultForquotesQueryNAme(data)) {
+        throw new Error("Unexpected response from API.graphql");
+      }
+      if (!data.data) throw new Error("Response data is undefined");
+      const recievedNumberOfQuotes =
+        data.data.quotesQueryName.items[0].quotesGenerated;
+      setQuotes_number(recievedNumberOfQuotes);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  function isGraphQLResultForquotesQueryNAme(
+    response: any
+  ): response is GraphQLResult<{
+    quotesQueryName: {
+      items: [UpdateQuoteInfoData];
+    };
+  }> {
+    return response?.data?.quotesQueryName?.items;
+  }
+  const handleCloseGenerator = () => setOpenGenerator(false);
+  const handleOpenGenerator = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setOpenGenerator(true);
+  };
+
+  useEffect(() => {
+    updataQuoteInfo();
+  }, []);
+
   return (
-    <GradientBackground>
+    <GradientBackgroundCon>
       <BackgroundImage1 src={storm} alt="storm-image" />
       <BackgroundImage2 src={cloud} alt="cloud-image" />
-
-      <QuoteGeneratorCon
-      // open={openGenerator}
-      // close={handleCloseGenerator}
-      // processingQuote={processingQuote}
-      // setProcessingQuote={setProcessingQuote}
-      // quoteReceived={quoteReceived}
-      // setQuoteReceived={setQuoteReceived}
+      <QuoteGenerators
+        open={openGenerator}
+        processingQuote={processingQuote}
+        setProcessingQuote={setProcessingQuote}
+        quoteReceived={quoteReceived}
+        // setQuoteReceived={setQuoteReceived}
+        close={handleCloseGenerator}
       />
+      {/* <QuoteGeneratorCon
+        open={openGenerator}
+        close={handleCloseGenerator}
+        processingQuote={processingQuote}
+        setProcessingQuote={setProcessingQuote}
+        quoteReceived={quoteReceived}
+        setQuoteReceived={setQuoteReceived}
+      /> */}
 
       {/* Quote Generator */}
       <QuoteGeneratorCon>
@@ -56,9 +116,7 @@ export default function Home() {
             .
           </QuoteGeneratorSubTitle>
 
-          <GenerateQuoteButton
-          //  onClick={handleOpenGenerator}
-          >
+          <GenerateQuoteButton onClick={handleOpenGenerator}>
             <GenerateQuoteButtonText>Make a Quote</GenerateQuoteButtonText>
           </GenerateQuoteButton>
         </QuoteGeneratorInnerCon>
@@ -78,6 +136,6 @@ export default function Home() {
           </FooterLink>
         </>
       </Footer>
-    </GradientBackground>
+    </GradientBackgroundCon>
   );
 }

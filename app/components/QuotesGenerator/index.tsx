@@ -1,16 +1,14 @@
-"use client";
-import { CircularProgress, Box } from "@mui/material";
-import Image from "next/image";
-import Link from "next/link";
 import styled from "styled-components";
+import Link from "next/link";
+import Image from "next/image";
+import { Box, CircularProgress } from "@mui/material";
 
-export const GradientBackground = styled.div`
+export const GradientBackgroundCon = styled.div`
   background: linear-gradient(to right, #000046, #1cb5e0);
   background-size: 400% 400%;
   animation: gradient 6s ease infinite;
   height: 100vh;
   width: 100vw;
-
   @keyframes gradient {
     0% {
       background-position: 0% 50%;
@@ -27,33 +25,41 @@ export const GradientBackground = styled.div`
 export const BackgroundImage1 = styled(Image)`
   position: relative;
   z-index: 1;
-  width: 70px;
-  height: 70px;
-  margin-left: 10px;
-  margin-top: 10px;
+  height: 90px;
+  width: 90px;
+  margin-left: 15px;
+  margin-top: 15px;
 `;
+
 export const BackgroundImage2 = styled(Image)`
   position: fixed;
   z-index: 1;
   right: 120px;
-  width: 70px;
-  height: 70px;
+  height: 90px;
+  width: 90px;
   bottom: 10px;
 `;
-export const Footer = styled.footer`
-  width: 100%;
+
+export const Footer = styled.div`
+  width: 100vw;
   height: 50px;
   text-align: center;
   font-family: "Source Code Pro", monospace;
   font-size: 15px;
   position: absolute;
   bottom: 0;
-  color: #fff;
-  z-index: 300;
+  color: white;
+  z-index: 999999;
 `;
+
+export const RedSpan = styled.span`
+  color: red;
+`;
+
 export const FooterLink = styled(Link)`
-  color: #fff;
+  color: white;
 `;
+
 export const QuoteGeneratorCon = styled.div`
   min-height: 350px;
   min-width: 350px;
@@ -85,7 +91,7 @@ export const QuoteGeneratorInnerCon = styled.div`
 
 export const QuoteGeneratorTitle = styled.div`
   font-family: "Permanent Marker", cursive;
-  font-size: 40px;
+  font-size: 50px;
   text-align: center;
   color: white;
   padding: 0px 20px 0px 20px;
@@ -99,18 +105,18 @@ export const QuoteGeneratorTitle = styled.div`
 export const QuoteGeneratorSubTitle = styled.div`
   color: white;
   font-family: "Caveat", cursive;
-  font-size: 30px;
+  font-size: 35px;
   position: relative;
   width: 100%;
   text-align: center;
   padding: 0px 20px 0px 20px;
   @media only screen and (max-width: 600px) {
-    font-size: 20px;
+    font-size: 25px;
   }
 `;
 
 export const GenerateQuoteButton = styled.div`
-  height: 80px;
+  height: 100px;
   width: 300px;
   border: 2px solid darkgrey;
   border-radius: 20px;
@@ -141,7 +147,7 @@ export const GenerateQuoteButton = styled.div`
 export const GenerateQuoteButtonText = styled.div`
   color: white;
   font-family: "Caveat", cursive;
-  font-size: 22px;
+  font-size: 35px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -158,6 +164,7 @@ export const QuoteGeneratorModalCon = styled(Box)`
   width: 70vw;
   height: 70vh;
   box-shadow: 24;
+  /* transition: 0.2s all ease-in-out; */
 
   background: rgb(193 193 255 / 19%);
   box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
