@@ -20,11 +20,24 @@ import { useEffect, useState } from "react";
 import { Amplify, API } from "aws-amplify";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import awsExports from "../src/aws-exports";
-import { quotesQueryName } from "@/src/graphql/queries";
+import { generateAQuote, quotesQueryName } from "@/src/graphql/queries";
 import QuoteGenerators from "./components/QuoteGenerators";
+import { GenerateAQuoteQuery } from "@/src/API";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
+interface GenerateAQuoteData {
+  generateAQuote: {
+    statusCode: number;
+    headers: { [key: string]: string };
+    body: string;
+  };
+  id: string;
+  queryName: string;
+  quotesGenerated: number;
+  createdAt: string;
+  updatedAt: string;
+}
 interface UpdateQuoteInfoData {
   id: string;
   queryName: string;
@@ -35,7 +48,7 @@ interface UpdateQuoteInfoData {
 export default function Home() {
   const [quotes_number, setQuotes_number] = useState<Number | null>(0);
   const [openGenerator, setOpenGenerator] = useState<boolean>(false);
-  const [quoteReceived, setQuoteReceived] = useState("");
+  const [quoteReceived, setQuoteReceived] = useState<String | null>(null);
   const [processingQuote, setProcessingQuote] = useState<boolean>(false);
   const updataQuoteInfo = async () => {
     try {
@@ -67,10 +80,38 @@ export default function Home() {
   }> {
     return response?.data?.quotesQueryName?.items;
   }
-  const handleCloseGenerator = () => setOpenGenerator(false);
+  const handleCloseGenerator = () => {
+    setOpenGenerator(false);
+    setProcessingQuote(false);
+    setQuoteReceived(null);
+  };
   const handleOpenGenerator = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     setOpenGenerator(true);
+    setProcessingQuote(true);
+    try {
+      //run function
+      const runFunction = JSON.stringify("runFunction");
+      const response = await API.graphql<GenerateAQuoteData>({
+        query: generateAQuote,
+        authMode: "AWS_IAM",
+        variables: {
+          input: runFunction,
+        },
+      });
+      const stringifiedResponse = JSON.stringify(response);
+      const runss = JSON.stringify(stringifiedResponse);
+      const bodyIndex = runss.indexOf("body=") + 5;
+      const bodyAndBase64 = runss.substring(bodyIndex);
+      const bodyArray = bodyAndBase64.split(",");
+      const body = bodyArray[0];
+      console.log(body);
+      setQuoteReceived(body);
+      setProcessingQuote(false);
+    } catch (e) {
+      console.error(e);
+      setProcessingQuote(false);
+    }
   };
 
   useEffect(() => {

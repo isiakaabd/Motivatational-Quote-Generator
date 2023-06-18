@@ -9,9 +9,9 @@ import {
   QuoteGeneratorSubTitle,
   QuoteGeneratorTitle,
 } from "./QuotesGenerator";
-// import ImageBlob from "../animations/ImageBlob";
-// import { ImageBlobCon } from "../animations/AnimationElements";
-// import AnimatedDownloadButton from "../animations/AnimatedDownloadButton";
+import { ImageBlobCon } from "../animations/AnimationElements";
+import ImageBlob from "../animations/ImageBlob";
+import AnimatedDownloadButton from "../animations/AnimatedDownloadButton";
 
 interface QuoteGeneratorModalProps {
   open: boolean;
@@ -100,10 +100,10 @@ QuoteGeneratorModalProps) => {
                 <QuoteGeneratorSubTitle style={{ marginTop: "20px" }}>
                   See a preview:
                 </QuoteGeneratorSubTitle>
-                {/* <ImageBlobCon> */}
-                {/* <ImageBlob quoteReceived={quoteReceived} blobUrl={blobUrl} />
+                <ImageBlobCon>
+                  <ImageBlob quoteReceived={quoteReceived} blobUrl={blobUrl} />
                 </ImageBlobCon>
-                <AnimatedDownloadButton handleDownload={handleDownload} /> */}
+                <AnimatedDownloadButton handleDownload={handleDownload} />
               </>
             )}
           </QuoteGeneratorModalInnerCon>
