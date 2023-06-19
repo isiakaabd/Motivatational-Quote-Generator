@@ -1,6 +1,3 @@
-import React from "react";
-import Image from "next/image";
-
 import lottieJson from "../assets/animated-photo.json";
 import {
   CenteredLottie,

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 // Material UI Imports
 import { Backdrop, Fade, Modal } from "@mui/material";
@@ -22,13 +22,10 @@ interface QuoteGeneratorModalProps {
   //   setQuoteReceived: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const style = {};
-
 const QuoteGeneratorModal = ({
   open,
   close,
   processingQuote,
-  setProcessingQuote,
   quoteReceived,
 }: //   setQuoteReceived,
 QuoteGeneratorModalProps) => {
@@ -76,7 +73,7 @@ QuoteGeneratorModalProps) => {
       }}
     >
       <Fade in={open}>
-        <QuoteGeneratorModalCon sx={style}>
+        <QuoteGeneratorModalCon>
           <QuoteGeneratorModalInnerCon>
             {/* State #1: Processing request of quote + quote state is empty */}
             {processingQuote === true && quoteReceived === null && (
@@ -101,7 +98,7 @@ QuoteGeneratorModalProps) => {
                   See a preview:
                 </QuoteGeneratorSubTitle>
                 <ImageBlobCon>
-                  <ImageBlob quoteReceived={quoteReceived} blobUrl={blobUrl} />
+                  <ImageBlob blobUrl={blobUrl} />
                 </ImageBlobCon>
                 <AnimatedDownloadButton handleDownload={handleDownload} />
               </>

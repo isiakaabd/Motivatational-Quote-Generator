@@ -7,10 +7,8 @@ import {
   FooterLink,
   QuoteGeneratorCon,
   QuoteGeneratorInnerCon,
-  QuoteGeneratorModalCon,
   QuoteGeneratorSubTitle,
   QuoteGeneratorTitle,
-  QuoteGeneratorModalInnerCon,
   GenerateQuoteButton,
   GenerateQuoteButtonText,
 } from "./components/QuotesGenerator";
@@ -22,7 +20,6 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import awsExports from "../src/aws-exports";
 import { generateAQuote, quotesQueryName } from "@/src/graphql/queries";
 import QuoteGenerators from "./components/QuoteGenerators";
-import { GenerateAQuoteQuery } from "@/src/API";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -116,6 +113,7 @@ export default function Home() {
 
   useEffect(() => {
     updataQuoteInfo();
+    //eslint-disable-next-line
   }, []);
 
   return (
@@ -127,17 +125,8 @@ export default function Home() {
         processingQuote={processingQuote}
         setProcessingQuote={setProcessingQuote}
         quoteReceived={quoteReceived}
-        // setQuoteReceived={setQuoteReceived}
         close={handleCloseGenerator}
       />
-      {/* <QuoteGeneratorCon
-        open={openGenerator}
-        close={handleCloseGenerator}
-        processingQuote={processingQuote}
-        setProcessingQuote={setProcessingQuote}
-        quoteReceived={quoteReceived}
-        setQuoteReceived={setQuoteReceived}
-      /> */}
 
       {/* Quote Generator */}
       <QuoteGeneratorCon>
