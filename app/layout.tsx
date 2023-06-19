@@ -1,8 +1,11 @@
 import "./globals.css";
-
 export const metadata = {
-  title: "Random Joke Generator",
-  description: "Rabdom Joke Generator",
+  title: "Inspirational Quote Generator",
+  description: "Inspirational Quote Generator",
+  openGraph: {
+    title: "Inspirational Quote Generator",
+    description: "Inspirational Quote Generator Created by Isiaka Abdulahi",
+  },
 };
 
 export default function RootLayout({
