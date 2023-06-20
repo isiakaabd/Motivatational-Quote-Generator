@@ -59,9 +59,10 @@ export default function Home() {
       if (!isGraphQLResultForquotesQueryNAme(data)) {
         throw new Error("Unexpected response from API.graphql");
       }
-      if (!data.data) throw new Error("Response data is undefined");
+      if (!data?.data) throw new Error("Response data is undefined");
+
       const recievedNumberOfQuotes =
-        data.data.quotesQueryName.items[0].quotesGenerated;
+        data?.data?.quotesQueryName?.items[0]?.quotesGenerated;
       setQuotes_number(recievedNumberOfQuotes);
     } catch (err) {
       console.log(err);
@@ -102,7 +103,6 @@ export default function Home() {
       const bodyAndBase64 = runss.substring(bodyIndex);
       const bodyArray = bodyAndBase64.split(",");
       const body = bodyArray[0];
-      console.log(body);
       setQuoteReceived(body);
       setProcessingQuote(false);
     } catch (e) {

@@ -50,7 +50,6 @@ QuoteGeneratorModalProps) => {
       const binaryData = Buffer.from(quoteReceived, "base64");
       const blob = new Blob([binaryData], { type: "image/png" });
       const blobUrlGenerated = URL.createObjectURL(blob);
-      console.log(blobUrlGenerated);
       setBlobUrl(blobUrlGenerated);
 
       return () => {

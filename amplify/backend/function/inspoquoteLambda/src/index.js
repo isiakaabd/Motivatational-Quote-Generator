@@ -63,7 +63,6 @@ exports.handler = async (event) => {
     // Validate response to the api
     const response = await fetch(apiURLInput);
     var quoteData = await response.json();
-    console.log(quoteData);
 
     // quote elements
     quoteText = quoteData[0].q;
@@ -91,7 +90,6 @@ exports.handler = async (event) => {
     if (newText !== "") {
       tspanElements += `<tspan x="${width / 2}" dy="1.2em">${newText}</tspan>`;
     }
-    console.log(tspanElements);
 
     // Construct the SVG
     const svgImage = `
